@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>House Price Estimator</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <h1>House Price<br/><em>Estimator</em></h1>
+    <p>ML-powered predictions using the Ames Housing dataset.</p>
+  </div>
+  <div class="status-pill">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">checking api...</span>
+  </div>
+</header>
+
+<main>
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <span class="section-tag">Input</span>
+      <h2>Property Details</h2>
+    </div>
+
+    <div class="form-grid">
+      <div class="field full"><span class="section-label">Location &amp; Zoning</span></div>
+
+      <div class="field">
+        <label>MS Zoning</label>
+        <select id="MS Zoning">
+          <option value="RL">RL – Residential Low</option>
+          <option value="RM">RM – Residential Med</option>
+          <option value="FV">FV – Floating Village</option>
+          <option value="RH">RH – Residential High</option>
+          <option value="C (all)">C – Commercial</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Neighborhood</label>
+        <select id="Neighborhood">
+          <option value="CollgCr">College Creek</option>
+          <option value="Veenker">Veenker</option>
+          <option value="Crawfor">Crawford</option>
+          <option value="NoRidge">Northridge</option>
+          <option value="Mitchel">Mitchell</option>
+          <option value="Somerst">Somerset</option>
+          <option value="NWAmes">NW Ames</option>
+          <option value="OldTown">Old Town</option>
+          <option value="BrkSide">Brookside</option>
+          <option value="SawyerW">Sawyer West</option>
+          <option value="NridgHt">Northridge Heights</option>
+          <option value="NAmes">North Ames</option>
+          <option value="StoneBr">Stone Brook</option>
+          <option value="IDOTRR">Iowa DOT &amp; RR</option>
+          <option value="MeadowV">Meadow Village</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Lot Area (sq ft)</label>
+        <input type="number" id="Lot Area" value="8450" min="1000" max="100000"/>
+      </div>
+
+      <div class="field">
+        <label>MS SubClass</label>
+        <select id="MS SubClass">
+          <option value="20">20 – 1-Story 1946+</option>
+          <option value="30">30 – 1-Story 1945-</option>
+          <option value="60">60 – 2-Story 1946+</option>
+          <option value="70">70 – 2-Story 1945-</option>
+          <option value="120">120 – 1-Story PUD</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"><hr class="divider-line"/></div>
+
+    <div class="form-grid">
+      <div class="field full"><span class="section-label">Quality &amp; Condition</span></div>
+
+      <div class="field">
+        <label>Overall Quality (1–10)</label>
+        <input type="number" id="Overall Qual" value="7" min="1" max="10"/>
+      </div>
+
+      <div class="field">
+        <label>Overall Condition (1–10)</label>
+        <input type="number" id="Overall Cond" value="5" min="1" max="10"/>
+      </div>
+
+      <div class="field">
+        <label>Exter Quality</label>
+        <select id="Exter Qual">
+          <option value="Ex">Excellent</option>
+          <option value="Gd" selected>Good</option>
+          <option value="TA">Average</option>
+          <option value="Fa">Fair</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Kitchen Quality</label>
+        <select id="Kitchen Qual">
+          <option value="Ex">Excellent</option>
+          <option value="Gd" selected>Good</option>
+          <option value="TA">Average</option>
+          <option value="Fa">Fair</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"><hr class="divider-line"/></div>
+
+    <div class="form-grid">
+      <div class="field full"><span class="section-label">Size &amp; Rooms</span></div>
+
+      <div class="field">
+        <label>Gr Living Area (sq ft)</label>
+        <input type="number" id="Gr Liv Area" value="1710" min="300" max="6000"/>
+      </div>
+
+      <div class="field">
+        <label>Total Bsmt SF</label>
+        <input type="number" id="Total Bsmt SF" value="856" min="0" max="6000"/>
+      </div>
+
+      <div class="field">
+        <label>1st Floor SF</label>
+        <input type="number" id="1st Flr SF" value="856" min="100" max="5000"/>
+      </div>
+
+      <div class="field">
+        <label>2nd Floor SF</label>
+        <input type="number" id="2nd Flr SF" value="854" min="0" max="3000"/>
+      </div>
+
+      <div class="field">
+        <label>Full Baths</label>
+        <input type="number" id="Full Bath" value="2" min="0" max="4"/>
+      </div>
+
+      <div class="field">
+        <label>Half Baths</label>
+        <input type="number" id="Half Bath" value="1" min="0" max="2"/>
+      </div>
+
+      <div class="field">
+        <label>Bedrooms</label>
+        <input type="number" id="Bedroom AbvGr" value="3" min="0" max="8"/>
+      </div>
+
+      <div class="field">
+        <label>Total Rooms</label>
+        <input type="number" id="TotRms AbvGrd" value="8" min="2" max="16"/>
+      </div>
+    </div>
+
+    <div class="divider"><hr class="divider-line"/></div>
+
+    <div class="form-grid">
+      <div class="field full"><span class="section-label">Age &amp; Garage</span></div>
+
+      <div class="field">
+        <label>Year Built</label>
+        <input type="number" id="Year Built" value="2003" min="1872" max="2010"/>
+      </div>
+
+      <div class="field">
+        <label>Year Remodelled</label>
+        <input type="number" id="Year Remod/Add" value="2003" min="1950" max="2010"/>
+      </div>
+
+      <div class="field">
+        <label>Garage Cars</label>
+        <input type="number" id="Garage Cars" value="2" min="0" max="5"/>
+      </div>
+
+      <div class="field">
+        <label>Garage Area (sq ft)</label>
+        <input type="number" id="Garage Area" value="548" min="0" max="1500"/>
+      </div>
+
+      <div class="field">
+        <label>Fireplaces</label>
+        <input type="number" id="Fireplaces" value="0" min="0" max="4"/>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button class="submit-btn" id="predictBtn" onclick="predict()">
+        Estimate Price →
+      </button>
+      <div class="error-msg" id="errorMsg"></div>
+    </div>
+  </div>
+
+  <!-- RESULT PANEL -->
+  <div class="result-panel">
+    <div class="result-card">
+      <div>
+        <div class="label">Estimated Sale Price</div>
+      </div>
+      <div class="price-display" id="priceDisplay">—</div>
+      <div class="result-meta" id="resultMeta">Fill in the property details and click estimate.</div>
+    </div>
+
+    <div class="info-card">
+      <h3>Model Info</h3>
+      <div class="info-row">
+        <span class="key">Algorithm</span>
+        <span class="val">Linear Regression</span>
+      </div>
+      <div class="info-row">
+        <span class="key">Dataset</span>
+        <span class="val">Ames Housing</span>
+      </div>
+      <div class="info-row">
+        <span class="key">R² Score</span>
+        <span class="val">~0.89</span>
+      </div>
+      <div class="info-row">
+        <span class="key">MAE</span>
+        <span class="val">~$16,000</span>
+      </div>
+      <div class="info-row">
+        <span class="key">API</span>
+        <span class="val">FastAPI + uvicorn</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
